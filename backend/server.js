@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const cookieParser = require("cookie-parser");
 const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
 // const cors = require("cors");
@@ -28,6 +29,7 @@ mongoose
 
 // Bodyparser middleware, extended false does not allow nested payloads
 // app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -37,6 +39,7 @@ app.use(
     secret: "foo",
     resave: false,
     saveUninitialized: true,
+    cookie: { secure: false },
     store: MongoStore.create({
         mongoUrl: keys.mongoURI,
         collection: 'sessions'

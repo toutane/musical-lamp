@@ -4,6 +4,7 @@ const router = express.Router();
 const passport = require('passport');
 const User = require('../models/User');
 
+// User Login
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', function(err, user, info) {
         if (err) {
@@ -22,8 +23,9 @@ router.post('/login', (req, res, next) => {
     })(req, res, next);
 });
 
+// User Registration
 router.post('/register', async (req, res, next) => {
-    let user = await User.findOne({ playname: req.body.playername });
+    let user = await User.findOne({ 'playername': req.body.playername });
     if (user) {
         return res.status(400).send({ message: "Player already exists."})
     } else {
@@ -46,5 +48,16 @@ router.post('/register', async (req, res, next) => {
     })
     }
 })
+
+// User Logout
+router.get('/logout', (req, res) => {
+    if (req.user) {
+        let user_id = req.user.id;
+        req.logout();
+        res.status(200).send({ message: `User ${user_id} successfuly logout.`})        
+    } else {
+        res.status(400).send({ message: 'User is not logged-in, cannot logout.'})
+    }
+  });
 
 module.exports = router;
