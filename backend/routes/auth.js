@@ -1,11 +1,11 @@
 const bcrypt = require('bcryptjs');
 const express = require('express');
-const router = express.Router();
+const auth = express.Router();
 const passport = require('passport');
 const User = require('../models/User');
 
 // User Login
-router.post('/login', (req, res, next) => {
+auth.post('/login', (req, res, next) => {
     passport.authenticate('local', function(err, user, info) {
         if (err) {
             return res.status(400).json({ errors: err });
@@ -24,7 +24,7 @@ router.post('/login', (req, res, next) => {
 });
 
 // User Registration
-router.post('/register', async (req, res, next) => {
+auth.post('/register', async (req, res, next) => {
     let user = await User.findOne({ 'playername': req.body.playername });
     if (user) {
         return res.status(400).send({ message: "Player already exists."})
@@ -50,7 +50,7 @@ router.post('/register', async (req, res, next) => {
 })
 
 // User Logout
-router.get('/logout', (req, res) => {
+auth.get('/logout', (req, res) => {
     if (req.user) {
         let user_id = req.user.id;
         req.logout();
@@ -60,4 +60,4 @@ router.get('/logout', (req, res) => {
     }
   });
 
-module.exports = router;
+module.exports = auth;

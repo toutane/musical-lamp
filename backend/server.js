@@ -5,10 +5,10 @@ const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
 // const cors = require("cors");
 
-const User = require('./models/User')
-
 const passport = require('./passport/setup');
+
 const auth = require('./routes/auth');
+const player = require('./routes/player');
 
 const app = express();
 const keys = require('./config/keys.js');
@@ -53,6 +53,8 @@ app.use(passport.session());
 
 // Routes
 app.use('/api/auth', auth);
+app.use('/api/player', player);
+
 app.get('/', (req, res) => res.send("Good morning on musical-lamp backend server!"))
 
 app.listen(keys.port, () => {
