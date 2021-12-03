@@ -54,9 +54,9 @@ auth.get('/logout', (req, res) => {
     if (req.user) {
         let user_id = req.user.id;
         req.logout();
-        res.status(200).send({ message: `User ${user_id} successfuly logout.`})        
+        res.status(200).json({ message: `User ${user_id} successfuly logout.`})        
     } else {
-        res.status(400).send({ message: 'User is not logged-in, cannot logout.'})
+        res.status(400).json({ message: 'User is not logged-in, cannot logout.'})
     }
   });
 
