@@ -35,6 +35,7 @@ public class Webservices : MonoBehaviour
         var request = new UnityWebRequest(BuildUrl(path), "POST");
         if (!string.IsNullOrEmpty(CookieString)) {
             request.SetRequestHeader("cookie", CookieString);
+            Debug.Log("add cookie to the request");
         }
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(jsonString);
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
