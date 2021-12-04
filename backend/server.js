@@ -36,9 +36,10 @@ app.use(express.urlencoded({ extended: false }));
 // Express Session
 app.use(
     session({
+    //HttpOnly: false,
     secret: "foo",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: { secure: false },
     store: MongoStore.create({
         mongoUrl: keys.mongoURI,

@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const express = require('express');
+const session = require('express-session');
 const auth = express.Router();
 const passport = require('passport');
 const User = require('../models/User');
@@ -18,7 +19,7 @@ auth.post('/login', (req, res, next) => {
                 return res.status(400).json({ errors: err });
             }
             
-            return res.status(200).json({ success: `Logged in ${user.id}` });
+            return res.status(200).json({ success: `Logged in ${user.id}, yout session ID: ${req.session.id}` });
         });
     })(req, res, next);
 });
@@ -54,7 +55,13 @@ auth.get('/logout', (req, res) => {
     if (req.user) {
         let user_id = req.user.id;
         req.logout();
-        res.status(200).json({ message: `User ${user_id} successfuly logout.`})        
+        req.session.destroy((err) => {
+            if (err) {
+                res.status(400).json({ message: 'Error while destroying session' })
+            } else {
+                res.status(200).json({ message: `User ${user_id} successfuly logout.`})        
+            }
+        })
     } else {
         res.status(400).json({ message: 'User is not logged-in, cannot logout.'})
     }
